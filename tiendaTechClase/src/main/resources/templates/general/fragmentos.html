@@ -13,7 +13,6 @@
         <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>        
     </head>
     <body>
-        
         <header th:fragment="header" class="header">
             <nav class="navbar navbar-expand-sm p-0">
                 <div class="container">                    
@@ -59,7 +58,7 @@
                                     [[#{plantilla.idioma}]]</a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" th:href="@{/(lang=es)}">Español</a></li>
-@@ -62,26 +62,65 @@
+                                    <li><a class="dropdown-item" th:href="@{/(lang=en)}">English</a></li>
                                     <li><a class="dropdown-item" th:href="@{/(lang=fr)}">Française</a></li>
                                     <li><a class="dropdown-item" th:href="@{/(lang=pt)}">Portugaise</a></li>
                                 </ul>

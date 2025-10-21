@@ -23,47 +23,49 @@ public class CategoriaController {
 
     @Autowired
     private CategoriaServices categoriaService;
-
-    @Autowired
-    private MessageSource messageSource;
-
+    
     @GetMapping("/listado")
     public String listado(Model model) {
-        var categorias = categoriaService.getCategorias(true); // llamando con parámetro booleano
+        var categorias = categoriaService.getCategorias(false);
         model.addAttribute("categorias", categorias);
         model.addAttribute("totalCategorias", categorias.size());
         return "/categoria/listado";
     }
+    
+    @Autowired
+    private MessageSource messageSource;
 
     @PostMapping("/guardar")
-    public String guardar(@Valid Categoria categoria, @RequestParam MultipartFile imagenFile, RedirectAttributes redirectAttributes) {
-        categoriaService.save(categoria, imagenFile);        
-        redirectAttributes.addFlashAttribute("todoOk", messageSource.getMessage("mensaje.actualizado", null, Locale.getDefault()));
+    public String guardar(@Valid Categoria categoria,@RequestParam MultipartFile imagenFile, RedirectAttributes redirectAttributes) {
+        
+        categoriaService.save(categoria,imagenFile);        
+        redirectAttributes.addFlashAttribute("todoOk",messageSource.getMessage("mensaje.actualizado",null,Locale.getDefault()));
+        
         return "redirect:/categoria/listado";
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Integer idCategoria, RedirectAttributes redirectAttributes) {
-        String titulo = "todoOk";
-        String detalle = "mensaje.eliminado";
+    public String eliminar(@RequestParam Long idCategoria, RedirectAttributes redirectAttributes) {
+        String titulo="todoOk";
+        String detalle="mensaje.eliminado";
         try {
-            categoriaService.delete(idCategoria);          
+          categoriaService.delete(idCategoria);          
         } catch (IllegalArgumentException e) {            
-            titulo = "error";
-            detalle = "cateogira.error01";
+            titulo="error"; // Captura la excepción de argumento inválido para el mensaje de "no existe"
+            detalle="cateogira.error01";
         } catch (IllegalStateException e) {            
-            titulo = "error";
-            detalle = "cateogira.error02";            
+            titulo="error"; // Captura la excepción de estado ilegal para el mensaje de "datos asociados"
+            detalle="cateogira.error02";            
         } catch (Exception e) {            
-            titulo = "error";
-            detalle = "cateogira.error03";
+            titulo="error";  // Captura cualquier otra excepción inesperada
+            detalle="cateogira.error03";
         }
-        redirectAttributes.addFlashAttribute(titulo, messageSource.getMessage(detalle, null, Locale.getDefault()));
+        redirectAttributes.addFlashAttribute(titulo,messageSource.getMessage(detalle, null, Locale.getDefault()));
         return "redirect:/categoria/listado";
     }
 
     @GetMapping("/modificar/{idCategoria}")    
-    public String modificar(@PathVariable("idCategoria") Integer idCategoria, Model model, RedirectAttributes redirectAttributes) {
+    public String modificar(@PathVariable("idCategoria") Long idCategoria, Model model, RedirectAttributes redirectAttributes) {
         Optional<Categoria> categoriaOpt = categoriaService.getCategoria(idCategoria);
         if (categoriaOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", messageSource.getMessage("categoria.error01", null, Locale.getDefault()));
@@ -72,6 +74,6 @@ public class CategoriaController {
         model.addAttribute("categoria", categoriaOpt.get());
         return "/categoria/modifica";
     }
-}
 
+}
  

@@ -26,7 +26,7 @@ public class CategoriaServices {
     }
     
     @Transactional(readOnly = true)
-    public Optional<Categoria> getCategoria(Integer idCategoria) {
+    public Optional<Categoria> getCategoria(Long idCategoria) {
         return categoriaRepository.findById(idCategoria);
     }
 
@@ -50,7 +50,7 @@ public class CategoriaServices {
     }
 
     @Transactional
-    public void delete(Integer idCategoria) {
+    public void delete(Long idCategoria) {
         // Verifica si la categoría existe antes de intentar eliminarlo
         if (!categoriaRepository.existsById(idCategoria)) {
             // Lanza una excepción para indicar que el usuario no fue encontrado
@@ -64,4 +64,3 @@ public class CategoriaServices {
         }
     }
 }
-
