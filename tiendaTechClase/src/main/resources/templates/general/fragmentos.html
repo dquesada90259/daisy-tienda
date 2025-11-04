@@ -30,6 +30,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" th:href="@{/pruebas/listado}">[[#{plantilla.asociaciones}]]</a></li>
                                     <li><a class="dropdown-item" th:href="@{/pruebas/listado2}">[[#{plantilla.consultas}]]</a></li>
+                                <ul class="dropdown-menu">                                    
+                                    <li><a class="dropdown-item" th:href="@{/consultas/listado}">[[#{plantilla.consultas}]]</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
@@ -85,6 +87,8 @@
         </footer>
         
 <section th:fragment="mostrarToast">
+
+        <section th:fragment="mostrarToast">
             <div aria-live="polite" aria-atomic="true" 
                  class="position-fixed top-50 start-50 translate-middle" style="z-index: 1080;">                
                 <div th:if="${error}" class="toast show"

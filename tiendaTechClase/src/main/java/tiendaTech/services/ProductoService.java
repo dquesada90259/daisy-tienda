@@ -5,7 +5,6 @@ import tiendaTech.repository.ProductoRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import tiendaTech.services.FirebaseStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -15,29 +14,34 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ProductoService {
 
+    private final ProductoRepository productoRepository;
+    private final FirebaseStorageService firebaseStorageService;
+
     @Autowired
-    private ProductoRepository productoRepository;
-    
-    @Transactional(readOnly=true)
+    public ProductoService(ProductoRepository productoRepository,
+                           FirebaseStorageService firebaseStorageService) {
+        this.productoRepository = productoRepository;
+        this.firebaseStorageService = firebaseStorageService;
+    }
+
+    @Transactional(readOnly = true)
     public List<Producto> getProductos(boolean activo) {
         if (activo) {
             return productoRepository.findByActivoTrue();
         }
         return productoRepository.findAll();
     }
-    
+
     @Transactional(readOnly = true)
-    public Optional<Producto> getProducto(Long idProducto) {
+    public Optional<Producto> getProducto(Long idProducto) { // <-- Cambiado a Long
         return productoRepository.findById(idProducto);
     }
-
-    @Autowired
-    private FirebaseStorageService firebaseStorageService;
 
     @Transactional
     public void save(Producto producto, MultipartFile imagenFile) {
         producto = productoRepository.save(producto);
-        if (!imagenFile.isEmpty()) { //Si no está vacío... pasaron una imagen...            
+
+        if (!imagenFile.isEmpty()) {
             try {
                 String rutaImagen = firebaseStorageService.uploadImage(
                         imagenFile, "producto",
@@ -45,23 +49,36 @@ public class ProductoService {
                 producto.setRutaImagen(rutaImagen);
                 productoRepository.save(producto);
             } catch (IOException e) {
-
+                // Deberías registrar el error en logs
+                System.err.println("Error al subir imagen: " + e.getMessage());
             }
         }
     }
 
     @Transactional
-    public void delete(Long idProducto) {
-        // Verifica si el producto existe antes de intentar eliminarlo
+    public void delete(Long idProducto) { // <-- Cambiado a Long
         if (!productoRepository.existsById(idProducto)) {
-            // Lanza una excepción para indicar que el usuario no fue encontrado
             throw new IllegalArgumentException("El producto con ID " + idProducto + " no existe.");
         }
         try {
             productoRepository.deleteById(idProducto);
         } catch (DataIntegrityViolationException e) {
-            // Lanza una nueva excepción para encapsular el problema de integridad de datos
             throw new IllegalStateException("No se puede eliminar el producto. Tiene datos asociados.", e);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaDerivada(double precioInf, double precioSup) {
+        return productoRepository.findByPrecioBetweenOrderByPrecioAsc(precioInf, precioSup);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaJPQL(double precioInf, double precioSup) {
+        return productoRepository.consultaJPQL(precioInf, precioSup);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaSQL(double precioInf, double precioSup) {
+        return productoRepository.consultaSQL(precioInf, precioSup);
     }
 }
