@@ -1,8 +1,8 @@
-package tiendaTech.controller;
+package tienda.controller;
 
-import tiendaTech.domain.Producto;
-import tiendaTech.services.CategoriaServices;
-import tiendaTech.services.ProductoService;
+import tienda.domain.Producto;
+import tienda.services.CategoriaService;
+import tienda.services.ProductoService;
 import jakarta.validation.Valid;
 import java.util.Locale;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class ProductoController {
     private ProductoService productoService;
 
     @Autowired
-    private CategoriaServices categoriaService;
+    private CategoriaService categoriaService;
 
     @GetMapping("/listado")
     public String listado(Model model) {
@@ -51,7 +51,7 @@ public class ProductoController {
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long idProducto, RedirectAttributes redirectAttributes) {
+    public String eliminar(@RequestParam Integer idProducto, RedirectAttributes redirectAttributes) {
         String titulo = "todoOk";
         String detalle = "mensaje.eliminado";
         try {
@@ -71,7 +71,7 @@ public class ProductoController {
     }
 
     @GetMapping("/usuaio/modificar/{idUsuario}")
-    public String modificar(@PathVariable("idProducto") Long idProducto, Model model, RedirectAttributes redirectAttributes) {
+    public String modificar(@PathVariable("idProducto") Integer idProducto, Model model, RedirectAttributes redirectAttributes) {
         Optional<Producto> productoOpt = productoService.getProducto(idProducto);
         if (productoOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", messageSource.getMessage("producto.error01", null, Locale.getDefault()));

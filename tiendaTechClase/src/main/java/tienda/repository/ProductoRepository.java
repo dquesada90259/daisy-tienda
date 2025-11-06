@@ -1,12 +1,13 @@
-package tiendaTech.repository;
+package tienda.repository;
 
-import tiendaTech.domain.Producto;
+import tienda.domain.Producto;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ProductoRepository extends JpaRepository<Producto,Integer>{
+public interface ProductoRepository extends JpaRepository<Producto, Integer> {
+
     public List<Producto> findByActivoTrue();
     
     //Ejemplo de método utilizando consultas derivadas
@@ -22,3 +23,4 @@ public interface ProductoRepository extends JpaRepository<Producto,Integer>{
     public List<Producto> consultaSQL(@Param("precioInf") double precioInf, @Param("precioSup") double precioSup);
 
 }
+

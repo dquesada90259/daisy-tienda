@@ -1,4 +1,4 @@
-package tiendaTech.domain;
+package tienda.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -16,7 +16,7 @@ public class Producto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private Long idProducto;
+    private Integer idProducto;
     //private Integer idCategoria;
 
     @Column(nullable = false, length = 50)

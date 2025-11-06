@@ -1,10 +1,10 @@
-package tiendaTech;
+package tienda;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TiendaTechApplicationTests {
+class TiendaApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,7 +1,7 @@
-package tiendaTech.controller;
+package tienda.controller;
 
-import tiendaTech.services.CategoriaServices;
-import tiendaTech.services.ProductoService;
+import tienda.services.CategoriaService;
+import tienda.services.ProductoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +12,10 @@ public class IndexController {
     
     // Las últimas versiones de Spring, recomiendan utilziar final y contructor en lugar de @autowired
     private final ProductoService productoService;
-    private final CategoriaServices categoriaService;
+    private final CategoriaService categoriaService;
     
     // (Spring inyecta automáticamente)
-    public IndexController(ProductoService productoService, CategoriaServices categoriaService) {
+    public IndexController(ProductoService productoService, CategoriaService categoriaService) {
         this.productoService = productoService;
         this.categoriaService = categoriaService;
     }
@@ -30,7 +30,7 @@ public class IndexController {
     }
     
     @GetMapping("/consultas/{idCategoria}")
-    public String listado(@PathVariable("idCategoria") Long idCategoria, Model model) {
+    public String listado(@PathVariable("idCategoria") Integer idCategoria, Model model) {
         model.addAttribute("idCategoriaActual", idCategoria);
         var categoriaOptional = categoriaService.getCategoria(idCategoria);
         if (categoriaOptional.isEmpty()) {

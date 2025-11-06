@@ -1,7 +1,7 @@
-package tiendaTech.services;
+package tienda.services;
 
-import tiendaTech.domain.Categoria;
-import tiendaTech.repository.CategoriaRepository;
+import tienda.domain.Categoria;
+import tienda.repository.CategoriaRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class CategoriaServices {
+public class CategoriaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
@@ -26,7 +26,7 @@ public class CategoriaServices {
     }
     
     @Transactional(readOnly = true)
-    public Optional<Categoria> getCategoria(Long idCategoria) {
+    public Optional<Categoria> getCategoria(Integer idCategoria) {
         return categoriaRepository.findById(idCategoria);
     }
 
@@ -50,7 +50,7 @@ public class CategoriaServices {
     }
 
     @Transactional
-    public void delete(Long idCategoria) {
+    public void delete(Integer idCategoria) {
         // Verifica si la categoría existe antes de intentar eliminarlo
         if (!categoriaRepository.existsById(idCategoria)) {
             // Lanza una excepción para indicar que el usuario no fue encontrado

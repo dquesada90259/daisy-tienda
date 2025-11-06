@@ -1,7 +1,7 @@
-package tiendaTech.controller;
+package tienda.controller;
 
-import tiendaTech.services.CategoriaServices;
-import tiendaTech.domain.Categoria;
+import tienda.domain.Categoria;
+import tienda.services.CategoriaService;
 import jakarta.validation.Valid;
 import java.util.Locale;
 import java.util.Optional;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CategoriaController {
 
     @Autowired
-    private CategoriaServices categoriaService;
+    private CategoriaService categoriaService;
     
     @GetMapping("/listado")
     public String listado(Model model) {
@@ -45,7 +45,7 @@ public class CategoriaController {
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long idCategoria, RedirectAttributes redirectAttributes) {
+    public String eliminar(@RequestParam Integer idCategoria, RedirectAttributes redirectAttributes) {
         String titulo="todoOk";
         String detalle="mensaje.eliminado";
         try {
@@ -65,7 +65,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/modificar/{idCategoria}")    
-    public String modificar(@PathVariable("idCategoria") Long idCategoria, Model model, RedirectAttributes redirectAttributes) {
+    public String modificar(@PathVariable("idCategoria") Integer idCategoria, Model model, RedirectAttributes redirectAttributes) {
         Optional<Categoria> categoriaOpt = categoriaService.getCategoria(idCategoria);
         if (categoriaOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", messageSource.getMessage("categoria.error01", null, Locale.getDefault()));
@@ -76,4 +76,3 @@ public class CategoriaController {
     }
 
 }
- 
