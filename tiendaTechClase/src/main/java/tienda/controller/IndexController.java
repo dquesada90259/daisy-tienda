@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class IndexController {
@@ -44,5 +46,17 @@ public class IndexController {
         var categorias = categoriaService.getCategorias(true);
         model.addAttribute("categorias", categorias);
         return "/index";
+    }
+    
+    @PostMapping("/consultas/consultaPorNombre")
+    public String consultaPorNombre(@RequestParam String nombre, Model model) {
+    var productos = productoService.getProductosPorNombre(nombre);
+    model.addAttribute("productos", productos);
+
+    var categorias = categoriaService.getCategorias(true);
+    model.addAttribute("categorias", categorias);
+
+    model.addAttribute("idCategoriaActual", null);
+    return "/index";
     }
 }

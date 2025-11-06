@@ -63,14 +63,34 @@
                 </div>
             </div>
         </section>
-        
+        <!-- Fragmento para buscar producto por nombre -->
+        <div th:fragment="formularioConsultaNombre">
+            <form method="post" th:action="@{/consultas/consultaPorNombre}" class="was-validated">
+                <div class="card p-2">
+                    <div class="card-header text-center bg-info text-white">
+                        <h5>Buscar por nombre</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Nombre del producto:</label>
+                            <input type="text" name="nombre" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-info text-white">
+                            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
         
         <section th:fragment="consultas">
             <div class="row row-cols-4 p-2">
                 <div th:replace="~{consultas/fragmentos :: formularioConsulta('/consultas/consultaDerivada', #{pruebas.ampliadas}, 'primary')}"></div>
                 <div th:replace="~{consultas/fragmentos :: formularioConsulta('/consultas/consultaJPQL', #{pruebas.jpql}, 'warning')}"></div>
                 <div th:replace="~{consultas/fragmentos :: formularioConsulta('/consultas/consultaSQL', #{pruebas.nativo}, 'success')}"></div>
-                <div><div class="card">Acá va su consulta de la tarea #2</div></div>
+                <div th:replace="~{consultas/fragmentos :: formularioConsultaNombre}"></div>
             </div>
         </section>
 
@@ -98,6 +118,6 @@
                 </div>
             </form>
         </div>
-        
+
     </body>
 </html> 

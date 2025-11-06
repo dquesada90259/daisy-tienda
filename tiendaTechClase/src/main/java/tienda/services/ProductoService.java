@@ -79,4 +79,8 @@ public class ProductoService {
     public List<Producto> consultaSQL(double precioInf, double precioSup) {
         return productoRepository.consultaSQL(precioInf, precioSup);
     }
+    
+    public List<Producto> getProductosPorNombre(String nombre) {
+    return productoRepository.findByDescripcionContainingIgnoreCase(nombre);
+    }
 }
